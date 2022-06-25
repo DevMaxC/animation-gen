@@ -12,14 +12,6 @@ import {
 import { PlusCircleIcon, XIcon } from "@heroicons/react/solid";
 
 const Home: NextPage = () => {
-  enum Style {
-    Linear = "linear",
-    Ease = "ease",
-    EaseIn = "easeIn",
-    EaseOut = "easeOut",
-    EaseInOut = "easeInOut",
-  }
-
   enum Transform {
     Rotate = "rotate",
     Translate = "translate",
