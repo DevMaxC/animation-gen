@@ -1,14 +1,6 @@
 import type { NextPage } from "next";
 import Head from "next/head";
-import Image from "next/image";
-import {
-  ChangeEvent,
-  SelectHTMLAttributes,
-  TextareaHTMLAttributes,
-  useEffect,
-  useRef,
-  useState,
-} from "react";
+import { ChangeEvent, useEffect, useState } from "react";
 import { PlusCircleIcon, XIcon } from "@heroicons/react/solid";
 
 const Home: NextPage = () => {
@@ -29,7 +21,6 @@ const Home: NextPage = () => {
     effectList: Array<Effect>;
   }
 
-  const outputArea = useRef<HTMLTextAreaElement>(null);
   const [createdAnimation, setCreatedAnimation] = useState<Animation>({
     name: "",
     duration: "0",
@@ -165,7 +156,6 @@ const Home: NextPage = () => {
         <div className="col-span-1 h-fit bg-red-500 p-10 pb-0 lg:col-span-2 lg:min-h-screen">
           <textarea
             className="aspect-video w-full resize-none rounded-xl border-2 border-red-600 p-5 font-mono font-semibold"
-            ref={outputArea}
             value={outputText}
           ></textarea>
           <div className="mt-5 grid grid-cols-1 space-x-2 rounded-xl border-2 border-red-600 bg-white p-10 lg:grid-cols-2">
