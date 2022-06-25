@@ -161,51 +161,55 @@ const Home: NextPage = () => {
   const [outputText, setOutputText] = useState<string>("");
 
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen bg-blue-500">
       <Head>
         <title>Tailwind Animation Helper</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <div className="grid w-full grid-cols-3">
+      <div className="grid w-full grid-cols-1 lg:grid-cols-3">
         {/* Output box + Settings area */}
 
-        <div className="col-span-2 h-fit min-h-screen bg-red-500 p-10 pb-0">
+        <div className="col-span-1 h-fit bg-red-500 p-10 pb-0 lg:col-span-2 lg:min-h-screen">
           <textarea
             className="aspect-video w-full resize-none rounded-xl border-2 border-red-600 p-5 font-mono font-semibold"
             ref={outputArea}
             value={outputText}
           ></textarea>
-          <div className="mt-5 space-x-2 rounded-xl border-2 border-red-600 bg-white p-10">
-            <label>Animation Name</label>
-            <input
-              placeholder="Animation Name"
-              className="mx-2 rounded-md bg-white p-2 text-red-500 outline outline-red-200"
-              type="text"
-              onChange={(e) => {
-                setCreatedAnimation({
-                  name: e.target.value,
-                  duration: createdAnimation.duration,
-                  effectList: createdAnimation.effectList,
-                });
-              }}
-            />
-            <label className="pl-8">Duration (seconds)</label>
-            <input
-              placeholder="0"
-              className="mx-2 rounded-md bg-white p-2 text-red-500 outline outline-red-200"
-              type="number"
-              onChange={(e) => {
-                setCreatedAnimation({
-                  name: createdAnimation.name,
-                  duration: e.target.value,
-                  effectList: createdAnimation.effectList,
-                });
-              }}
-            />
+          <div className="mt-5 grid grid-cols-1 space-x-2 rounded-xl border-2 border-red-600 bg-white p-10 lg:grid-cols-2">
+            <div className="col-span-1">
+              <label>Animation Name</label>
+              <input
+                placeholder="Animation Name"
+                className="mx-2 rounded-md bg-white p-2 text-red-500 outline outline-red-200"
+                type="text"
+                onChange={(e) => {
+                  setCreatedAnimation({
+                    name: e.target.value,
+                    duration: createdAnimation.duration,
+                    effectList: createdAnimation.effectList,
+                  });
+                }}
+              />
+            </div>
+            <div className="col-span-1">
+              <label>Duration (seconds)</label>
+              <input
+                placeholder="0"
+                className="mx-2 rounded-md bg-white p-2 text-red-500 outline outline-red-200"
+                type="number"
+                onChange={(e) => {
+                  setCreatedAnimation({
+                    name: createdAnimation.name,
+                    duration: e.target.value,
+                    effectList: createdAnimation.effectList,
+                  });
+                }}
+              />
+            </div>
           </div>
           <div>
-            <h1 className="mt-6 text-center text-red-300">
+            <h1 className="m-6 text-center text-red-300">
               Made by{" "}
               <a
                 className="cursor-pointer hover:text-white"
@@ -218,7 +222,7 @@ const Home: NextPage = () => {
         </div>
 
         {/* Effects Adder */}
-        <div className="col-span-1 min-h-screen overflow-y-scroll bg-blue-500 p-10">
+        <div className="col-span-1 min-h-max overflow-y-scroll bg-blue-500 p-10 lg:min-h-screen">
           <div className="overflow-hidden rounded-xl border-2 border-blue-600 bg-white">
             {createdAnimation.effectList.map((efe, ind) => {
               return (
