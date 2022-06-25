@@ -1,8 +1,15 @@
 import type { NextPage } from "next";
 import Head from "next/head";
 import Image from "next/image";
-import { TextareaHTMLAttributes, useEffect, useRef, useState } from "react";
-import { PlusCircleIcon } from "@heroicons/react/solid";
+import {
+  ChangeEvent,
+  SelectHTMLAttributes,
+  TextareaHTMLAttributes,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
+import { PlusCircleIcon, XIcon } from "@heroicons/react/solid";
 
 const Home: NextPage = () => {
   enum Style {
@@ -21,7 +28,7 @@ const Home: NextPage = () => {
 
   interface Effect {
     transform: Transform;
-    quantity: number;
+    quantity: string;
   }
 
   interface Animation {
@@ -68,6 +75,85 @@ const Home: NextPage = () => {
       `;
   };
 
+  const createBlankEffect = () => {
+    setCreatedAnimation({
+      name: createdAnimation.name,
+      duration: createdAnimation.duration,
+      effectList: [
+        ...createdAnimation.effectList,
+        { transform: Transform.Scale, quantity: 0 },
+      ],
+    });
+  };
+
+  const modifyEffect = (e: ChangeEvent<HTMLSelectElement>, ind: number) => {
+    var myEffect: Transform;
+
+    if (e.target.value == Transform.Rotate) {
+      myEffect = Transform.Rotate;
+    } else if (e.target.value == Transform.Scale) {
+      myEffect = Transform.Scale;
+    } else if (e.target.value == Transform.Translate) {
+      myEffect = Transform.Translate;
+    } else {
+      console.log("ERROR IN SELECT");
+      myEffect = Transform.Scale;
+    }
+
+    const modifiedEffect: Effect = {
+      transform: myEffect,
+      quantity: createdAnimation.effectList[ind].quantity,
+    };
+
+    console.log(modifiedEffect);
+
+    setCreatedAnimation({
+      duration: createdAnimation.duration,
+      name: createdAnimation.name,
+      effectList: [
+        ...createdAnimation.effectList.slice(0, ind),
+        modifiedEffect,
+        ...createdAnimation.effectList.slice(
+          ind + 1,
+          createdAnimation.effectList.length
+        ),
+      ],
+    });
+  };
+
+  const deleteEffect = (ind: number) => {
+    setCreatedAnimation({
+      duration: createdAnimation.duration,
+      name: createdAnimation.name,
+      effectList: [
+        ...createdAnimation.effectList.slice(0, ind),
+        ...createdAnimation.effectList.slice(
+          ind + 1,
+          createdAnimation.effectList.length
+        ),
+      ],
+    });
+  };
+
+  const quantityChange = (e: ChangeEvent<HTMLInputElement>, ind: number) => {
+    const modifiedEffect: Effect = {
+      transform: createdAnimation.effectList[ind].transform,
+      quantity: e.target.value,
+    };
+    setCreatedAnimation({
+      duration: createdAnimation.duration,
+      name: createdAnimation.name,
+      effectList: [
+        ...createdAnimation.effectList.slice(0, ind),
+        modifiedEffect,
+        ...createdAnimation.effectList.slice(
+          ind + 1,
+          createdAnimation.effectList.length
+        ),
+      ],
+    });
+  };
+
   useEffect(() => {
     setOutputText(animationToString(createdAnimation));
   }, [createdAnimation]);
@@ -83,6 +169,7 @@ const Home: NextPage = () => {
 
       <div className="grid w-full grid-cols-3">
         {/* Output box + Settings area */}
+
         <div className="col-span-2 h-fit min-h-screen bg-red-500 p-10">
           <textarea
             className="aspect-video w-full resize-none p-5"
@@ -124,22 +211,44 @@ const Home: NextPage = () => {
 
         {/* Effects Adder */}
         <div className="col-span-1 min-h-screen overflow-y-scroll bg-blue-500 p-10">
-          <div className="rounded-xl bg-white">
+          <div className="overflow-hidden rounded-xl bg-white">
             {createdAnimation.effectList.map((efe, ind) => {
-              return <div className="h-20 border-b border-blue-500"></div>;
+              return (
+                <div
+                  key={ind}
+                  className="relative h-20 border-b border-blue-500"
+                >
+                  <select
+                    onChange={(e) => {
+                      modifyEffect(e, ind);
+                    }}
+                    name="cars"
+                    id="cars"
+                  >
+                    <option value={Transform.Scale}>Scale</option>
+                    <option value={Transform.Rotate}>Rotate</option>
+                    <option value={Transform.Translate}>Translate</option>
+                  </select>
+                  <input
+                    onChange={(e) => {
+                      quantityChange(e, ind);
+                    }}
+                    placeholder="quantity"
+                  ></input>
+                  <button
+                    onClick={() => {
+                      deleteEffect(ind);
+                    }}
+                    className="absolute top-2 right-2 rounded-full bg-blue-500 text-white"
+                  >
+                    <XIcon className="h-5 w-5"></XIcon>
+                  </button>
+                </div>
+              );
             })}
 
             <button
-              onClick={() => {
-                setCreatedAnimation({
-                  name: createdAnimation.name,
-                  duration: createdAnimation.duration,
-                  effectList: [
-                    ...createdAnimation.effectList,
-                    { transform: Transform.Scale, quantity: 0 },
-                  ],
-                });
-              }}
+              onClick={() => createBlankEffect()}
               className="w-full text-blue-500"
             >
               <PlusCircleIcon className="mx-auto h-16 w-16"></PlusCircleIcon>
