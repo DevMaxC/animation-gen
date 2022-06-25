@@ -81,7 +81,7 @@ const Home: NextPage = () => {
       duration: createdAnimation.duration,
       effectList: [
         ...createdAnimation.effectList,
-        { transform: Transform.Scale, quantity: 0 },
+        { transform: Transform.Scale, quantity: "0" },
       ],
     });
   };
@@ -170,16 +170,17 @@ const Home: NextPage = () => {
       <div className="grid w-full grid-cols-3">
         {/* Output box + Settings area */}
 
-        <div className="col-span-2 h-fit min-h-screen bg-red-500 p-10">
+        <div className="col-span-2 h-fit min-h-screen bg-red-500 p-10 pb-0">
           <textarea
-            className="aspect-video w-full resize-none p-5"
+            className="aspect-video w-full resize-none rounded-xl border-2 border-red-600 p-5 font-mono font-semibold"
             ref={outputArea}
             value={outputText}
           ></textarea>
-          <div className="mt-5 bg-white p-10">
+          <div className="mt-5 space-x-2 rounded-xl border-2 border-red-600 bg-white p-10">
+            <label>Animation Name</label>
             <input
               placeholder="Animation Name"
-              className="mx-2 bg-red-500"
+              className="mx-2 rounded-md bg-white p-2 text-red-500 outline outline-red-200"
               type="text"
               onChange={(e) => {
                 setCreatedAnimation({
@@ -189,10 +190,11 @@ const Home: NextPage = () => {
                 });
               }}
             />
+            <label className="pl-8">Duration (seconds)</label>
             <input
-              placeholder="Duration"
-              className="mx-2 bg-red-500"
-              type="text"
+              placeholder="0"
+              className="mx-2 rounded-md bg-white p-2 text-red-500 outline outline-red-200"
+              type="number"
               onChange={(e) => {
                 setCreatedAnimation({
                   name: createdAnimation.name,
@@ -201,22 +203,28 @@ const Home: NextPage = () => {
                 });
               }}
             />
-            <input
-              placeholder="Animation Name"
-              className="mx-2 bg-red-500"
-              type="text"
-            />
+          </div>
+          <div>
+            <h1 className="mt-6 text-center text-red-300">
+              Made by{" "}
+              <a
+                className="cursor-pointer hover:text-white"
+                href="https://portfolio-gusud.vercel.app/"
+              >
+                Max Church
+              </a>
+            </h1>
           </div>
         </div>
 
         {/* Effects Adder */}
         <div className="col-span-1 min-h-screen overflow-y-scroll bg-blue-500 p-10">
-          <div className="overflow-hidden rounded-xl bg-white">
+          <div className="overflow-hidden rounded-xl border-2 border-blue-600 bg-white">
             {createdAnimation.effectList.map((efe, ind) => {
               return (
                 <div
                   key={ind}
-                  className="relative h-20 border-b border-blue-500"
+                  className="relative flex h-20 items-center border-b-4 border-blue-200"
                 >
                   <select
                     onChange={(e) => {
@@ -224,12 +232,14 @@ const Home: NextPage = () => {
                     }}
                     name="cars"
                     id="cars"
+                    className="mx-4 rounded-md p-2 text-blue-500 outline outline-blue-200"
                   >
                     <option value={Transform.Scale}>Scale</option>
                     <option value={Transform.Rotate}>Rotate</option>
                     <option value={Transform.Translate}>Translate</option>
                   </select>
                   <input
+                    className="mx-4 rounded-md p-2 text-blue-500 outline outline-blue-200"
                     onChange={(e) => {
                       quantityChange(e, ind);
                     }}
